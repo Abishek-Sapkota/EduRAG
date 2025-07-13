@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ask the AI Tutor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 40px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+        }
+        textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: #0066cc;
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #004d99;
+        }
+        #response {
+            margin-top: 30px;
+            background: #eef;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ask Your AI Tutor</h2>
+        <label for="question">Your Question</label>
+        <textarea id="question" rows="4" placeholder="Enter your question..."></textarea>
+
+        <label for="persona">Tutor Persona</label>
+        <select id="persona">
+            <option value="friendly">Friendly</option>
+            <option value="strict">Strict</option>
+            <option value="humorous">Humorous</option>
+        </select>
+
+        <button onclick="askTutor()">Ask</button>
+
+        <div id="response"></div>
+    </div>
+
+    <script>
+        async function askTutor() {
+            const question = document.getElementById("question").value;
+            const persona = document.getElementById("persona").value;
+            const responseBox = document.getElementById("response");
+
+            if (!question.trim()) {
+                responseBox.innerText = "Please enter a question.";
+                return;
+            }
+
+            responseBox.innerText = "Thinking...";
+
+            try {
+                const response = await fetch("/ask/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ question, persona }),
+                });
+
+                const data = await response.json();
+                responseBox.innerText = data.result || "No response received.";
+            } catch (err) {
+                console.error(err);
+                responseBox.innerText = "An error occurred while contacting the tutor.";
+            }
+        }
+    </script>
+</body>
+</html>
