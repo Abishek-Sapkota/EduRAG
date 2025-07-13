@@ -18,7 +18,7 @@ EduRAG is a Django-based backend system for an AI-powered educational tutor that
 
 ## Local Deployment
 
-Setup backend using **Gunicorn** + **Nginx** locally to simulate a production environment.
+Locally setup backend using **Gunicorn** + **Nginx**
 
 ---
 
